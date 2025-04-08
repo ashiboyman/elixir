@@ -1,0 +1,11 @@
+<h1>Rule HTML</h1>
+
+<p>
+  {@emoji}
+</p>
+
+<ol>
+  <%= for rule <- @rules do %>
+    <li>{rule.text}</li>
+  <% end %>
+</ol>

@@ -1,0 +1,44 @@
+<div id="kanban-board" phx-update="ignore">
+  <.header class="mb-4">
+    Board Tasks
+    <:actions>
+      <.link patch={~p"/tasks/new"}>
+        <.button>New Task</.button>
+      </.link>
+    </:actions>
+  </.header>
+  
+  <div class="flex space-x-4">
+    <%= for status <- @statuses do %>
+      <!-- Each column -->
+      <div
+        id={"drop-" <> Atom.to_string(status)}
+        class="w-1/3 border p-4 rounded-lg"
+        phx-hook="DropTarget"
+        data-status={Atom.to_string(status)}
+      >
+        <h2 class="font-bold text-xl mb-2 capitalize">
+          {status
+          |> Atom.to_string()
+          |> String.replace("_", " ")
+          |> String.capitalize()}
+        </h2>
+        
+        <div class="space-y-2 p-3 task-container">
+          <%= for task <- Enum.filter(@tasks, fn t -> t.status == status end) do %>
+            <div
+              id={"task-" <> to_string(task.id)}
+              phx-hook="Draggable"
+              data-task-id={task.id}
+              class="bg-white p-2 rounded border border-gray-100 cursor-move select-none"
+            >
+              <h3 class="font-semibold">{task.title}</h3>
+              
+              <p class="text-sm text-gray-600">{task.description}</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
