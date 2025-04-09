@@ -32,7 +32,27 @@
               data-task-id={task.id}
               class="bg-white p-2 rounded border border-gray-100 cursor-move select-none"
             >
+            <div class="flex items-center justify-between ">
               <h3 class="font-semibold">{task.title}</h3>
+              
+              <.link
+                navigate={~p"/tasks/#{task.id}"}
+                class="inline-flex items-center  hover:text-blue-500"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-4 h-4 ml-1"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </.link>
+            </div>
               
               <p class="text-sm text-gray-600">{task.description}</p>
             </div>
