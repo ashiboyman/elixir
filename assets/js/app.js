@@ -22,7 +22,7 @@ import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 let Hooks = {}
-
+// Hooks is an object that stores all your custom JavaScript behaviors that will be attached to HTML elements. 
 // Draggable hook for task cards
 // Draggable hook for task cards
 Hooks.Draggable = {
@@ -31,6 +31,8 @@ Hooks.Draggable = {
   },
   updated() {
     this.setupDrag();
+    console.log("-----------------------------")
+    console.log(this.el)
   },
   setupDrag() {
     this.el.setAttribute("draggable", true);
@@ -82,9 +84,14 @@ Hooks.DropTarget = {
       
       console.log(`Moved task ${id} to ${status} column via event`);
     });
+    this.handleEvent("test", ({ points, user }) => {
+      alert(`Moved task ${points} to ${user} column via event`);
+    });
   },
   updated() {
     this.setupDrop();
+    console.log("-----------------------------")
+    console.log(this.el)
   },
   setupDrop() {
     // Previous implementation remains the same...

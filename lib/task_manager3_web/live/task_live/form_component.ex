@@ -53,6 +53,7 @@ defmodule TaskManager3Web.TaskLive.FormComponent do
   end
 
   def handle_event("save", %{"task" => task_params}, socket) do
+    IO.inspect(socket , label: "socket.request_path")
     save_task(socket, socket.assigns.action, task_params)
   end
 
@@ -72,6 +73,7 @@ defmodule TaskManager3Web.TaskLive.FormComponent do
   end
 
   defp save_task(socket, :new, task_params) do
+    IO.inspect(socket, label: "socket")
     case Tasks.create_task(task_params) do
       {:ok, task} ->
         notify_parent({:saved, task})

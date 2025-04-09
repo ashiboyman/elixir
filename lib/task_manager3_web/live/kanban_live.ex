@@ -10,7 +10,7 @@ defmodule TaskManager3Web.KanbanLive do
     tasks = Tasks.list_tasks()
     {:ok, assign(socket, tasks: tasks, statuses: @statuses)}
   end
-
+  # function is called when the client (the browser) sends an event to the LiveView.
   @impl true
   def handle_event("update_status", %{"id" => id, "status" => new_status}, socket) do
     task = Tasks.get_task!(id)
@@ -38,7 +38,8 @@ defmodule TaskManager3Web.KanbanLive do
     {:noreply, update_tasks(socket) |> push_event("task_updated", %{
       id: updated_task.id,
       status: Atom.to_string(updated_task.status)
-    })}
+    })
+  }
   end
 
   defp update_tasks(socket) do
