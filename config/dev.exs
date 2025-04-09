@@ -10,10 +10,7 @@ config :task_manager3, TaskManager3.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
-  config :httpoison, :hackney_opts,
-  ssl_options: [
-    verify: :verify_none
-  ]
+  
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
