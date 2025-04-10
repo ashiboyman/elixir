@@ -38,9 +38,18 @@ defmodule TaskManager3.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :username])
     |> validate_email(opts)
     |> validate_password(opts)
+    |> validate_username()
+  end
+
+  defp validate_username(changeset) do
+    changeset
+    |> validate_required([:username])
+    |> validate_length(:username, min: 2, max: 25)
+    |> unsafe_validate_unique(:username, TaskManager3.Repo)
+    |> unique_constraint(:username)
   end
 
   defp validate_email(changeset, opts) do

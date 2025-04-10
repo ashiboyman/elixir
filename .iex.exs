@@ -1,0 +1,9 @@
+alias TaskManager3.Repo
+alias TaskManager3.Raffles
+alias TaskManager3.Raffles.Raffle
+alias TaskManager3.Admin
+alias TaskManager3.Charities.Charity
+alias TaskManager3.Accounts.User
+alias TaskManager3.Tickets.Ticket
+import Ecto.Query
+import Ecto.Changeset
