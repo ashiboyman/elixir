@@ -1,30 +1,50 @@
-<.header>
-  Raffle {@raffle.id}
-  <:subtitle>This is a raffle record from your database.</:subtitle>
-  <:actions>
-    <.link patch={~p"/raffles/#{@raffle}/show/edit"} phx-click={JS.push_focus()}>
-      <.button>Edit raffle</.button>
-    </.link>
-  </:actions>
-</.header>
+<%= cond do %>
+  <% @raffle.failed -> %>
+    <% {_, {error, _}} = @raffle.failed %>
+    <div class="w-40 h-40 bg-red-100">
+      <h1>Error: <%= error.message %></h1>
+    </div>
+  
+  <% @raffle.ok? -> %>
+    <.header>
+      Raffle <%= @raffle.result.id %>
+      <:subtitle>This is a raffle record from your database.</:subtitle>
+      <:actions>
+        <.link patch={~p"/raffles/#{@raffle.result}/show/edit"} phx-click={JS.push_focus()}>
+          <.button>Edit raffle</.button>
+        </.link>
+      </:actions>
+    </.header>
 
-<.list>
-  <:item title="Prize">{@raffle.prize}</:item>
-  <:item title="Description">{@raffle.description}</:item>
-  <:item title="Ticket price">{@raffle.ticket_price}</:item>
-  <:item title="Status">{@raffle.status}</:item>
-  <:item title="Image path">{@raffle.image_path}</:item>
-</.list>
+    <.list>
+      <:item title="Prize"><%= @raffle.result.prize %></:item>
+      <:item title="Description"><%= @raffle.result.description %></:item>
+      <:item title="Ticket price"><%= @raffle.result.ticket_price %></:item>
+      <:item title="Status"><%= @raffle.result.status %></:item>
+      <:item title="Image path"><%= @raffle.result.image_path %></:item>
+    </.list>
 
-<.back navigate={~p"/raffles"}>Back to raffles</.back>
+    <.back navigate={~p"/raffles"}>Back to raffles</.back>
 
-<.modal :if={@live_action == :edit} id="raffle-modal" show on_cancel={JS.patch(~p"/raffles/#{@raffle}")}>
-  <.live_component
-    module={TaskManager3Web.RaffleLive.FormComponent}
-    id={@raffle.id}
-    title={@page_title}
-    action={@live_action}
-    raffle={@raffle}
-    patch={~p"/raffles/#{@raffle}"}
-  />
-</.modal>
+    <.modal
+      :if={@live_action == :edit}
+      id="raffle-modal"
+      show
+      on_cancel={JS.patch(~p"/raffles/#{@raffle.result}")}
+    >
+      <.live_component
+        module={TaskManager3Web.RaffleLive.FormComponent}
+        id={@raffle.result.id}
+        title={@page_title}
+        action={@live_action}
+        raffle={@raffle.result}
+        patch={~p"/raffles/#{@raffle.result}"}
+      />
+    </.modal>
+
+  <% true -> %>
+    <!-- Default to the loading state -->
+    <div class="flex items-center justify-center h-full py-8 animate-spin">
+      Loading...
+    </div>
+<% end %>

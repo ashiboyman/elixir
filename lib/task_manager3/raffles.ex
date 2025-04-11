@@ -22,6 +22,8 @@ defmodule TaskManager3.Raffles do
   end
 
   def filter_raffles(filter) do
+    Process.sleep(1000)
+
     Raffle
     |> with_status(filter["status"])
     |> search_by(filter["q"])
@@ -55,7 +57,11 @@ defmodule TaskManager3.Raffles do
       ** (Ecto.NoResultsError)
 
   """
-  def get_raffle!(id), do: Repo.get!(Raffle, id)
+  def get_raffle!(id) do
+    Process.sleep(5000)
+    # raise("fuck")
+    Repo.get!(Raffle, id)
+  end
 
   @doc """
   Creates a raffle.

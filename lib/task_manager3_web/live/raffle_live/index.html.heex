@@ -20,8 +20,14 @@
   <%!-- <.filter_form form={@form} charity_options={@charity_options} /> --%>
   <.form id="filter" phx-change="filter" for={@form}>
     <.input field={@form[:q]} phx-debounce="1000" placeholder="Search..." autocomplete="off" />
-    <.input field={@form[:status]} type="select" prompt="status" options={[:upcoming, :open, :closed]} />
+    <.input
+      field={@form[:status]}
+      type="select"
+      prompt="status"
+      options={["upcomingdsc sd": "upcoming", open: "open", closed: "closed"]}
+    />
 
+    <.link patch={~p"/raffles"}>Reset</.link>
   </.form>
   <div class="raffles" id="raffles" phx-update="stream">
     <.raffle_card :for={{dom_id, raffle} <- @streams.raffles} raffle={raffle} id={dom_id} />

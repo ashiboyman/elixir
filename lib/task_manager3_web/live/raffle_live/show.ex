@@ -10,10 +10,16 @@ defmodule TaskManager3Web.RaffleLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    {:noreply,
-     socket
-     |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:raffle, Raffles.get_raffle!(id))}
+    # {:noreply,
+    #  socket
+    #  |> assign(:page_title, page_title(socket.assigns.live_action))
+    #  |> assign(:raffle, Raffles.get_raffle!(id))}
+    socket =
+      socket
+      |> assign(:page_title, page_title(socket.assigns.live_action))
+      |> assign_async(:raffle, fn -> {:ok, %{raffle: Raffles.get_raffle!(id)}} end)
+
+    {:noreply, socket}
   end
 
   defp page_title(:show), do: "Show Raffle"
