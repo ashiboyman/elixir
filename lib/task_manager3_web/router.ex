@@ -42,6 +42,15 @@ defmodule TaskManager3Web.Router do
     live "/tasks/:id/show/edit", TaskLive.Show, :edit
 
     live "/board", KanbanLive, :index
+
+    live "/raffles", RaffleLive.Index, :index
+    live "/raffles/new", RaffleLive.Index, :new
+    live "/raffles/:id/edit", RaffleLive.Index, :edit
+
+    live "/raffles/:id", RaffleLive.Show, :show
+    live "/raffles/:id/show/edit", RaffleLive.Show, :edit
+
+
   end
 
   # Other scopes may use custom stacks.

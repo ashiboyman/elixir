@@ -1,0 +1,70 @@
+<.header>
+  Listing Raffles
+  <:actions>
+    <.link patch={~p"/raffles/new"}>
+      <.button>New Raffle</.button>
+    </.link>
+  </:actions>
+</.header>
+<div class="raffle-index">
+  <%!-- <.banner :if={false}>
+        <.icon name="hero-sparkles-solid" /> Mystery Raffle Coming Soon!
+        <:details :let={vibe}>
+          To Be Revealed Tomorrow {vibe}
+        </:details>
+        <:details>
+          Any guesses?
+        </:details>
+      </.banner> --%>
+
+  <%!-- <.filter_form form={@form} charity_options={@charity_options} /> --%>
+  <.form id="filter" phx-change="filter" for={@form}>
+    <.input field={@form[:q]} phx-debounce="1000" placeholder="Search..." autocomplete="off" />
+    <.input field={@form[:status]} type="select" prompt="status" options={[:upcoming, :open, :closed]} />
+
+  </.form>
+  <div class="raffles" id="raffles" phx-update="stream">
+    <.raffle_card :for={{dom_id, raffle} <- @streams.raffles} raffle={raffle} id={dom_id} />
+  </div>
+</div>
+<%!-- <.table
+  id="raffles"
+  rows={@streams.raffles}
+  row_click={fn {_id, raffle} -> JS.navigate(~p"/raffles/#{raffle}") end}
+>
+  <:col :let={{_id, raffle}} label="Prize">{raffle.prize}</:col>
+  <:col :let={{_id, raffle}} label="Description">{raffle.description}</:col>
+  <:col :let={{_id, raffle}} label="Ticket price">{raffle.ticket_price}</:col>
+  <:col :let={{_id, raffle}} label="Status">{raffle.status}</:col>
+  <:col :let={{_id, raffle}} label="Image path">{raffle.image_path}</:col>
+  <:action :let={{_id, raffle}}>
+    <div class="sr-only">
+      <.link navigate={~p"/raffles/#{raffle}"}>Show</.link>
+    </div>
+    <.link patch={~p"/raffles/#{raffle}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, raffle}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: raffle.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table> --%>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="raffle-modal"
+  show
+  on_cancel={JS.patch(~p"/raffles")}
+>
+  <.live_component
+    module={TaskManager3Web.RaffleLive.FormComponent}
+    id={@raffle.id || :new}
+    title={@page_title}
+    action={@live_action}
+    raffle={@raffle}
+    patch={~p"/raffles"}
+  />
+</.modal>
