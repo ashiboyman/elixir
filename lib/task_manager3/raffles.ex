@@ -22,7 +22,7 @@ defmodule TaskManager3.Raffles do
   end
 
   def filter_raffles(filter) do
-    Process.sleep(1000)
+    # Process.sleep(1000)
 
     Raffle
     |> with_status(filter["status"])

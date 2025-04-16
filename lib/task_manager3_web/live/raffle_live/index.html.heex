@@ -6,6 +6,11 @@
     </.link>
   </:actions>
 </.header>
+
+<div class="w-full bg-slate-500 ">
+  <p>loading: {@loading}</p>
+</div>
+
 <div class="raffle-index">
   <%!-- <.banner :if={false}>
         <.icon name="hero-sparkles-solid" /> Mystery Raffle Coming Soon!
@@ -16,7 +21,6 @@
           Any guesses?
         </:details>
       </.banner> --%>
-
   <%!-- <.filter_form form={@form} charity_options={@charity_options} /> --%>
   <.form id="filter" phx-change="filter" for={@form}>
     <.input field={@form[:q]} phx-debounce="1000" placeholder="Search..." autocomplete="off" />
@@ -25,14 +29,38 @@
       type="select"
       prompt="status"
       options={["upcomingdsc sd": "upcoming", open: "open", closed: "closed"]}
-    />
-
-    <.link patch={~p"/raffles"}>Reset</.link>
+    /> <.link patch={~p"/raffles"}>Reset</.link>
   </.form>
-  <div class="raffles" id="raffles" phx-update="stream">
-    <.raffle_card :for={{dom_id, raffle} <- @streams.raffles} raffle={raffle} id={dom_id} />
+  
+  <%= if @loading do %>
+  <div class="flex items-center justify-center mt-4">
+  
+    <svg
+      class="animate-spin h-10 w-10 text-blue-500"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+      </circle>
+      
+      <path
+        class="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 6.627 5.373 12 12 12v-4a7.946 7.946 0 01-6-2.709z"
+      >
+      </path>
+    </svg>
   </div>
+  <% end %>
+  
+  <%= if @loading == false do %>
+    <div class="raffles" id="raffles" phx-update="stream">
+      <.raffle_card :for={{dom_id, raffle} <- @streams.raffles} raffle={raffle} id={dom_id} />
+    </div>
+  <% end %>
 </div>
+
 <%!-- <.table
   id="raffles"
   rows={@streams.raffles}
@@ -58,7 +86,6 @@
     </.link>
   </:action>
 </.table> --%>
-
 <.modal
   :if={@live_action in [:new, :edit]}
   id="raffle-modal"
